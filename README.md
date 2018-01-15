@@ -28,8 +28,9 @@ Next, modify the .env file and change the build parameters if needed:
 | SITECORE_SOLR_CORE_PREFIX | Prefix to use for the Sitecore SOLR cores        |
 
 The build results in the following Docker images:
-- sitecore: IIS + ASP.NET + Sitecore
+- commerce: ASP.NET
 - mssql: MS SQL + Sitecore databases
+- sitecore: IIS + ASP.NET + Sitecore
 - solr: Apache Solr 
 - xconnect: IIS + ASP.NET + XConnect
 
