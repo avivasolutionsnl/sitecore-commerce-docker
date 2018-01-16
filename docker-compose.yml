@@ -9,9 +9,6 @@ services:
       DB_PREFIX: ${SQL_DB_PREFIX}
       COMMERCE_SDK_PACKAGE: ${COMMERCE_SDK_PACKAGE}
       COMMERCE_SIF_PACKAGE: ${COMMERCE_SIF_PACKAGE}
-      SITECORE_PACKAGE: ${SITECORE_PACKAGE}
-      XCONNECT_PACKAGE: ${XCONNECT_PACKAGE}
-      HOST_NAME: mssql
   environment:
     ACCEPT_EULA: "Y"
     sa_password: ${SQL_SA_PASSWORD}
@@ -28,9 +25,7 @@ services:
       HOST_NAME: ${SOLR_HOST_NAME}
       PORT: ${SOLR_PORT}
       SERVICE_NAME: ${SOLR_SERVICE_NAME}
-      XCONNECT_CORE_PREFIX: ${XCONNECT_SOLR_CORE_PREFIX}
       SITECORE_CORE_PREFIX: ${SITECORE_SOLR_CORE_PREFIX}
-      CONFIG_PACKAGE: ${CONFIG_PACKAGE}
       COMMERCE_SIF_PACKAGE: ${COMMERCE_SIF_PACKAGE}
   ports:
     - ${SOLR_PORT}
@@ -40,22 +35,12 @@ services:
       ipv4_address: 172.16.238.10
 
  xconnect:
-  build:
-    context: ./
-    dockerfile: ./xconnect/Dockerfile
-    args:
-      SQL_SA_PASSWORD: ${SQL_SA_PASSWORD}
-      SQL_DB_PREFIX: ${SQL_DB_PREFIX}
-      SITE_NAME: ${XCONNECT_SITE_NAME}
-      SOLR_CORE_PREFIX: ${XCONNECT_SOLR_CORE_PREFIX}
-      SOLR_PORT: ${SOLR_PORT}
-      XCONNECT_PACKAGE: ${XCONNECT_PACKAGE}
-      CONFIG_PACKAGE: ${CONFIG_PACKAGE}
+  image: sitecoredocker_xconnect
   volumes:
     - .\logs\xconnect:C:\inetpub\wwwroot\xconnect\App_data\Logs
   networks:
     app_net:
-      ipv4_address: 172.16.238.12    
+      ipv4_address: 172.16.238.12
   depends_on:
     - mssql
     - solr
@@ -65,12 +50,10 @@ services:
     context: ./
     dockerfile: ./sitecore/Dockerfile
     args:
-      SQL_SA_PASSWORD: ${SQL_SA_PASSWORD}
-      SQL_DB_PREFIX: ${SQL_DB_PREFIX}
-      SITE_NAME: ${SITECORE_SITE_NAME}
-      SOLR_PORT: ${SOLR_PORT}    
-      SITECORE_PACKAGE: ${SITECORE_PACKAGE}
-      CONFIG_PACKAGE: ${CONFIG_PACKAGE}     
+      COMMERCE_CERT_PATH: ${COMMERCE_CERT_PATH}
+      COMMERCE_CONNECT_PACKAGE: ${COMMERCE_CONNECT_PACKAGE}
+      COMMERCE_DEPLOYMENT_HELPER_PACKAGE: ${COMMERCE_DEPLOYMENT_HELPER_PACKAGE}
+      COMMERCE_SIF_PACKAGE: ${COMMERCE_SIF_PACKAGE}
   volumes:
     - .\logs\sitecore:c:\inetpub\wwwroot\${SITECORE_SITE_NAME}\App_Data\logs
     - .\wwwroot\sitecore:C:\Workspace
@@ -80,7 +63,7 @@ services:
     - solr
   networks:
     app_net:
-      ipv4_address: 172.16.238.13    
+      ipv4_address: 172.16.238.13
 
  commerce:
   build: 
@@ -90,8 +73,8 @@ services:
       SQL_SA_PASSWORD: ${SQL_SA_PASSWORD}
       SQL_DB_PREFIX: ${SQL_DB_PREFIX}
       SOLR_PORT: ${SOLR_PORT}    
-      SHOP_NAME: ${COMMERCE_SHOP_NAME}
-      ENVIRONMENT_NAME: ${COMMERCE_ENVIRONMENT_NAME}
+      SHOP_NAME: ${SHOP_NAME}
+      ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}
       COMMERCE_SIF_PACKAGE: ${COMMERCE_SIF_PACKAGE}
       COMMERCE_SDK_PACKAGE: ${COMMERCE_SDK_PACKAGE}
       SITECORE_BIZFX_PACKAGE: ${SITECORE_BIZFX_PACKAGE}

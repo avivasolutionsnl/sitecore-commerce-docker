@@ -19,7 +19,7 @@ ADD scripts /Scripts
 RUN Expand-Archive -Path "/Files/$Env:COMMERCE_SDK_PACKAGE" -DestinationPath '/Files/Sitecore.Commerce.SDK'; 
 RUN Expand-Archive -Path "/Files/$Env:SITECORE_IDENTITY_PACKAGE" -DestinationPath '/Files/Sitecore.IdentityServer.SDK'; 
 RUN Expand-Archive -Path "/Files/$Env:COMMERCE_SIF_PACKAGE" -DestinationPath '/Files/SIF.Sitecore.Commerce'; 
-RUN Expand-Archive -Path '/Files/$Env:SITECORE_BIZFX_PACKAGE' -DestinationPath '/Files/Sitecore.BizFX'; 
+RUN Expand-Archive -Path "/Files/$Env:SITECORE_BIZFX_PACKAGE" -DestinationPath '/Files/Sitecore.BizFX'; 
 
 ENV DOTNET_SDK_DOWNLOAD_URL="https://download.microsoft.com/download/2/9/3/293BC432-348C-4D1C-B628-5AC8AB7FA162/dotnet-sdk-2.1.3-win-x64.exe"
 
