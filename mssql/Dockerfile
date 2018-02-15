@@ -36,7 +36,7 @@ RUN sqlcmd -Q \"EXEC sp_MSforeachdb 'IF charindex(''Sitecore'', ''?'' ) = 1 BEGI
 ADD scripts /Scripts
 RUN /Scripts/Install-SIF.ps1
 
-RUN [Environment]::SetEnvironmentVariable('PSModulePath', $env:PSModulePath + ';/Files/CommerceSIF/Modules'); `
-    $connStr = 'Data Source=.;Initial Catalog={0}_Core;Integrated Security=True;' -f $Env:DB_PREFIX; `
-    Install-SitecoreConfiguration -Path "C:\\Files\\CommerceSIF\\Configuration\\Commerce\\CommerceEngine\\CommerceEngine.UserRoles.json" `
-    -ConnectionString $connStr
+# RUN [Environment]::SetEnvironmentVariable('PSModulePath', $env:PSModulePath + ';/Files/CommerceSIF/Modules'); `
+#     $connStr = 'Data Source=.;Initial Catalog={0}_Core;Integrated Security=True;' -f $Env:DB_PREFIX; `
+#     Install-SitecoreConfiguration -Path "C:\\Files\\CommerceSIF\\Configuration\\Commerce\\CommerceEngine\\CommerceEngine.UserRoles.json" `
+#     -ConnectionString $connStr
