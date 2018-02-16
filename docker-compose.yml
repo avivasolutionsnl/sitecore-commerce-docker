@@ -52,8 +52,10 @@ services:
     args:
       COMMERCE_CERT_PATH: ${COMMERCE_CERT_PATH}
       COMMERCE_CONNECT_PACKAGE: ${COMMERCE_CONNECT_PACKAGE}
-      COMMERCE_DEPLOYMENT_HELPER_PACKAGE: ${COMMERCE_DEPLOYMENT_HELPER_PACKAGE}
+      WEB_TRANSFORM_TOOL: ${WEB_TRANSFORM_TOOL}
+      COMMERCE_CONNECT_ENGINE_PACKAGE: ${COMMERCE_CONNECT_ENGINE_PACKAGE}
       COMMERCE_SIF_PACKAGE: ${COMMERCE_SIF_PACKAGE}
+      ROOT_CERT_PATH: ${ROOT_CERT_PATH}
   volumes:
     - .\logs\sitecore:c:\inetpub\wwwroot\${SITECORE_SITE_NAME}\App_Data\logs
     - .\wwwroot\sitecore:C:\Workspace
@@ -79,6 +81,7 @@ services:
       COMMERCE_SDK_PACKAGE: ${COMMERCE_SDK_PACKAGE}
       SITECORE_BIZFX_PACKAGE: ${SITECORE_BIZFX_PACKAGE}
       SITECORE_IDENTITY_PACKAGE: ${SITECORE_IDENTITY_PACKAGE}
+      COMMERCE_ENGINE_PACKAGE: ${COMMERCE_ENGINE_PACKAGE}
   volumes:
     - .\logs\commerce\CommerceAuthoring_Sc9:C:\inetpub\wwwroot\CommerceAuthoring_Sc9\wwwroot\logs
     - .\logs\commerce\CommerceMinions_Sc9:C:\inetpub\wwwroot\CommerceMinions_Sc9\wwwroot\logs

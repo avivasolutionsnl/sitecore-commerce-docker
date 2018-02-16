@@ -26,6 +26,7 @@ Next, modify the .env file and change the build parameters if needed:
 | SOLR_SERVICE_NAME         | Name of the SOLR Windows service                 |
 | SITECORE_SITE_NAME        | Host name of the Sitecore site                   |
 | SITECORE_SOLR_CORE_PREFIX | Prefix to use for the Sitecore SOLR cores        |
+| WEB_TRANSFORM_TOOL        | Reference to the XML transform tool (Microsoft.Web.XmlTransform.dll). Needs to be placed in the files folder and can be found in the Visual Studio program files folder |
 
 The build results in the following Docker images:
 - commerce: ASP.NET

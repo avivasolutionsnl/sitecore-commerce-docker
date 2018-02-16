@@ -32,11 +32,3 @@ RUN & $Env:SQL_PACKAGE_EXE /a:Publish /sf:'c:/Files/Commerce/Sitecore.Commerce.E
 RUN & $Env:SQL_PACKAGE_EXE /a:Publish /sf:'c:/Files/Commerce/Sitecore.Commerce.Engine.DB.dacpac' /tdn:SitecoreCommerce9_Global /tsn:$Env:COMPUTERNAME
 
 RUN sqlcmd -Q \"EXEC sp_MSforeachdb 'IF charindex(''Sitecore'', ''?'' ) = 1 BEGIN EXEC [?]..sp_changedbowner ''sa'' END'\" 
-
-ADD scripts /Scripts
-RUN /Scripts/Install-SIF.ps1
-
-RUN [Environment]::SetEnvironmentVariable('PSModulePath', $env:PSModulePath + ';/Files/CommerceSIF/Modules'); `
-    $connStr = 'Data Source=.;Initial Catalog={0}_Core;Integrated Security=True;' -f $Env:DB_PREFIX; `
-    Install-SitecoreConfiguration -Path "C:\\Files\\CommerceSIF\\Configuration\\Commerce\\CommerceEngine\\CommerceEngine.UserRoles.json" `
-    -ConnectionString $connStr
