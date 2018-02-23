@@ -1,16 +1,20 @@
-Run Sitecore Commerce using Docker and Windows containers.
+Run Sitecore Commerce 9 using Docker and Windows containers.
+
+# Disclaimer
+This repository contains experimental code that we use in development setups. We do not consider the current code in this repository ready for production.
+Hopefully this will help you to get up and running with Sitecore and Docker. By no means we consider ourselves Docker experts and thus expect these images to still contain a lot of bugs. Great help for creating this setup was provided by the [sitecoreops](https://github.com/sitecoreops/sitecore-images) and [sitecore-nine-docker](https://github.com/pbering/sitecore-nine-docker) repos. Please feel free to provide feedback by creating an issue, PR, etc. 
 
 # Requirements
 - Windows 10 update 1709 (with Hyper-V enabled)
 - Docker for Windows (version 1712 or better): https://docs.docker.com/docker-for-windows/
 - Visual Studio 15.5.3
-- Sitecore installation files
+- Sitecore Commerce 9 installation files
 
 # Build
 As Sitecore does not distribute Docker images, the first step is to build the required Docker images.
 For this you need the Sitecore installation files and a Sitecore license file. What files to use are set by environment variables (interpreted by docker-compose); download all the packages that are defined by variables in the `.env.` file.
 
-As this Sitecore Commerce Docker build relies on the Sitecore Docker, first build the Sitecore Docker images: https://github.com/avivasolutionsnl/sitecore-docker
+As this Sitecore Commerce Docker build relies on Sitecore Docker, first build the Sitecore Docker images: https://github.com/avivasolutionsnl/sitecore-docker
 
 The xp0 Sitecore topology requires SSL between the services, for this we need self signed certificates for the 
 xConnect and SOLR roles. You can generate these by running the './Generate-Certificates.ps1' script. 
@@ -59,6 +63,18 @@ For the first run an initialization step is required in the `sitecore` container
 PS> docker exec sitecore powershell -Command "C:\Scripts\InstallCommercePackages.ps1"
 ```
 
+The business roles are not created well, so in Sitecore create a role named Commerce Business Users make it a member of the admin group.
+
+Perform the bootstrap method in Commerce Server.
+
+Enable in App_Config\Include\Y.Commerce.Engine the following:
+```
+PS> docker exec commerce powershell
+PS C:\inetpub\wwwroot\sitecore\App_Config\Include\Y.Commerce.Engine> mv Sitecore.Commerce.Engine.DataProvider.config.disabled Sitecore.Commerce.Engine.DataProvider.config
+PS C:\inetpub\wwwroot\sitecore\App_Config\Include\Y.Commerce.Engine> mv Sitecore.Commerce.Engine.Connectors.Index.Common.config.disabled Sitecore.Commerce.Engine.Connectors.Index.Common.config
+PS C:\inetpub\wwwroot\sitecore\App_Config\Include\Y.Commerce.Engine> mv Sitecore.Commerce.Engine.Connectors.Index.Solr.config.disabled Sitecore.Commerce.Engine.Connectors.Index.Solr.config
+```
+
 After this final installation step commit all changes to the Docker images:
 ```
 PS> docker commit
@@ -78,16 +94,16 @@ The containers have fixed IP addresses in the docker compose file. The easiest w
 ## Log files
 Logging is set up to log on the host under the logs folder of this repository. 
 
-## Known issues
-Docker for Windows can to be unstable at times. Some common troubleshooting items are listed here.
+# Known issues
+Docker for Windows can be unstable at times, some troubleshooting tips are listed below.
 
-### Containers not reachable by domain name
-Sometimes the internal Docker DNS is malfunctioning and containers (e.g. mssql) cannot be reached by domain name. To solve this, restart the Docker daemon.
+## Containers not reachable by domain name
+Sometimes the internal Docker DNS is malfunctioning and containers (e.g. mssql) cannot be reached by domain name. To solve this restart the Docker daemon.
 
 ### Clean up network hosting
 In case it's no longer possible to create networks and docker network commands don't work give this a try: https://github.com/MicrosoftDocs/Virtualization-Documentation/tree/live/windows-server-container-tools/CleanupContainerHostNetworking
 
-### Clean Docker install
+## Clean Docker install
 In case nothing else helps, perform a clean Docker install using the following steps:
 - Uninstall Docker
 
