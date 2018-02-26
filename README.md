@@ -58,22 +58,26 @@ To start Sitecore:
 PS> docker-compose up
 ```
 
-For the first run an initialization step is required in the `sitecore` container (retry when it fails):
+For the first run an initialization step is required in the `sitecore` container (retry when it fails). This is needed because not all installation steps can be run isolated. For example, to install sitecore packages, sitecore and its dependencies need to be running. The script will install the commerce connect packages, initialize a default environment and enable the Sitecore commerce data provider. 
+
+The script takes the following parameters, which have default values:
+
+| Parameter                 | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| certificateFile           | The certficate file that contains the thumbprint used to authenticate against commerce server  |
+| shopsServiceUrl           | The url of the commerce server shops service     |
+| commerceOpsServiceUrl     | The url of the commerce server ops service       |
+| identityServerUrl         | The url of the identity server                   |
+| defaultEnvironment        | Name of the default environment                  |
+| defaultShopName           | Name of the default shop                         |
+| sitecoreUserName          | Sitecore user name                               |
+| sitecorePassword          | Sitecore password                                |
+
 ```
 PS> docker exec sitecore powershell -Command "C:\Scripts\InstallCommercePackages.ps1"
 ```
 
 The business roles are not created well, so in Sitecore create a role named Commerce Business Users make it a member of the admin group.
-
-Perform the bootstrap method in Commerce Server.
-
-Enable in App_Config\Include\Y.Commerce.Engine the following:
-```
-PS> docker exec commerce powershell
-PS C:\inetpub\wwwroot\sitecore\App_Config\Include\Y.Commerce.Engine> mv Sitecore.Commerce.Engine.DataProvider.config.disabled Sitecore.Commerce.Engine.DataProvider.config
-PS C:\inetpub\wwwroot\sitecore\App_Config\Include\Y.Commerce.Engine> mv Sitecore.Commerce.Engine.Connectors.Index.Common.config.disabled Sitecore.Commerce.Engine.Connectors.Index.Common.config
-PS C:\inetpub\wwwroot\sitecore\App_Config\Include\Y.Commerce.Engine> mv Sitecore.Commerce.Engine.Connectors.Index.Solr.config.disabled Sitecore.Commerce.Engine.Connectors.Index.Solr.config
-```
 
 After this final installation step commit all changes to the Docker images:
 ```
@@ -95,7 +99,9 @@ The containers have fixed IP addresses in the docker compose file. The easiest w
 Logging is set up to log on the host under the logs folder of this repository. 
 
 # Known issues
-Docker for Windows can be unstable at times, some troubleshooting tips are listed below.
+- We have quite a lot of custom powershell scripts for trivial installation tasks. This is because the commerce SIF scripts contain hardcoded values. For example, it is not possible to use hostnames other than localhost. We should be able to remove this custom code when those scripts get fixed.
+- During the installation of the commerce server instances, it tries to set permissions on the log folder. For some reason, this results in an exception saying the access control list is not in canonical form. This can be ignored, because the log folders are mounted on the host. However, it does cause an annoying delay in the installation. 
+- Docker for Windows can be unstable at times, some troubleshooting tips are listed below.
 
 ## Containers not reachable by domain name
 Sometimes the internal Docker DNS is malfunctioning and containers (e.g. mssql) cannot be reached by domain name. To solve this restart the Docker daemon.

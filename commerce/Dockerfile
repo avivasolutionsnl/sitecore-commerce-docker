@@ -24,8 +24,8 @@ FROM microsoft/aspnet:4.7.1-windowsservercore-1709
 
 ARG HOST_NAME="commerce"
 ARG SITECORE_HOSTNAME="sitecore"
-ARG SHOP_NAME="myshop"
-ARG ENVIRONMENT_NAME="myshopauthoring"
+ARG SHOP_NAME="CommerceEngineDefaultStorefront"
+ARG ENVIRONMENT_NAME="HabitatAuthoring"
 ARG COMMERCE_ENGINE_PACKAGE
 ARG SITECORE_IDENTITY_PACKAGE
 
