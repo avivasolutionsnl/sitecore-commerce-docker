@@ -99,7 +99,7 @@ The containers have fixed IP addresses in the docker compose file. The easiest w
 Logging is set up to log on the host under the logs folder of this repository. 
 
 # Known issues
-- We have quite a lot of custom powershell script for trivial installation tasks. This is because the commerce SIF scripts contain some hardcoded values. For example, it is not possible to use hostnames other than localhost. We should be able to remove this custom code when those scripts get fixed.
+- We have quite a lot of custom powershell scripts for trivial installation tasks. This is because the commerce SIF scripts contain hardcoded values. For example, it is not possible to use hostnames other than localhost. We should be able to remove this custom code when those scripts get fixed.
 - During the installation of the commerce server instances, it tries to set permissions on the log folder. For some reason, this results in an exception saying the access control list is not in canonical form. This can be ignored, because the log folders are mounted on the host. However, it does cause an annoying delay in the installation. 
 - Docker for Windows can be unstable at times, some troubleshooting tips are listed below.
 
