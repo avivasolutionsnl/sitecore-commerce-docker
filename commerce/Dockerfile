@@ -35,11 +35,12 @@ ARG SQL_DB_PREFIX
 ARG SQL_SERVER="mssql"
 ARG SOLR_PORT=8983
 ARG SOLR_CORE_PREFIX="xp0"
-ENV XCONNECT_CERT_PATH "c:\\Files\\xConnect.pfx"
-ENV SOLR_CERT_PATH "c:\\Files\\solr.pfx"
-ENV SITECORE_CERT_PATH "c:\\Files\\sitecore.pfx"
-ENV COMMERCE_CERT_PATH "c:\\Files\\commerce.pfx"
-ENV ROOT_CERT_PATH "c:\\Files\\root.pfx"
+
+ARG XCONNECT_CERT_PATH
+ARG SOLR_CERT_PATH
+ARG SITECORE_CERT_PATH
+ARG COMMERCE_CERT_PATH
+ARG ROOT_CERT_PATH
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
@@ -56,18 +57,18 @@ COPY --from=prepare /Files/${COMMERCE_ENGINE_PACKAGE} /Files/
 COPY --from=prepare /Files/${SITECORE_IDENTITY_PACKAGE} /Files/
 
 # Trust Self signed certificates
-RUN /Scripts/Import-Certificate.ps1 -certificateFile $Env:SOLR_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
-RUN /Scripts/Import-Certificate.ps1 -certificateFile $Env:XCONNECT_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
-RUN /Scripts/Import-Certificate.ps1 -certificateFile $Env:SITECORE_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
-RUN /Scripts/Import-Certificate.ps1 -certificateFile $Env:COMMERCE_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
-RUN /Scripts/Import-Certificate.ps1 -certificateFile $Env:ROOT_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
+RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:SOLR_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
+RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:XCONNECT_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
+RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:SITECORE_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
+RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:COMMERCE_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
+RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:ROOT_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
 
 # Import certificate
-RUN /Scripts/Import-Certificate.ps1 -certificateFile $Env:COMMERCE_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
-RUN /Scripts/Import-Certificate.ps1 -certificateFile $Env:ROOT_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
+RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:COMMERCE_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
+RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:ROOT_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
 
 # Import XConnect certificate
-RUN /Scripts/Import-Certificate.ps1 -certificateFile $Env:XCONNECT_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
+RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:XCONNECT_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
 
 RUN net user /add commerceuser 'Pa$$w0rd'
 

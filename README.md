@@ -15,9 +15,9 @@ As Sitecore does not distribute Docker images, the first step is to build the re
 For this you need the Sitecore installation files and a Sitecore license file. What files to use are set by environment variables (interpreted by docker-compose); download all the packages that are defined by variables in the `.env.` file.
 
 As this Sitecore Commerce Docker build relies on Sitecore Docker, first build the Sitecore Docker images: https://github.com/avivasolutionsnl/sitecore-docker
+From the Sitecore Docker `files` directory copy all `.pfx` certificate files to the `files/` directory.
 
-The xp0 Sitecore topology requires SSL between the services, for this we need self signed certificates for the 
-xConnect and SOLR roles. You can generate these by running the './Generate-Certificates.ps1' script. 
+The Commerce setup requires by default SSL between the services, for this we need (more) self signed certificates. You can generate these by running the `./Generate-Certificates.ps1` script (note that this requires an Administrator elevated powershell environment and you may need to set the correct execution policy, e.g. `PS> powershell.exe -ExecutionPolicy Unrestricted`).
 
 Next, modify the .env file and change the build parameters if needed:
 
@@ -36,7 +36,7 @@ The build results in the following Docker images:
 - commerce: ASP.NET
 - mssql: MS SQL + Sitecore databases
 - sitecore: IIS + ASP.NET + Sitecore
-- solr: Apache Solr 
+- solr: Apache Solr
 
 # Run
 Docker compose is used to start up all required services.
@@ -88,25 +88,27 @@ PS> docker commit
 The containers have fixed IP addresses in the docker compose file. The easiest way to access the containers from the host is by adding the following to your hosts file:
 
 ``` Hosts
-172.16.238.10	solr
-172.16.238.11	mssql
-172.16.238.12	xconnect
-172.16.238.13	sitecore
-172.16.238.14	commerce
+172.16.2.2	commerce
+172.16.2.3	mssql
+172.16.2.4	sitecore
+172.16.2.5	solr
+172.16.2.6	xconnect
 ```
 
 ## Log files
 Logging is set up to log on the host under the logs folder of this repository. 
 
 # Known issues
+Docker for Windows can be unstable at times, some troubleshooting tips are listed below.
+
+## Commerce setup
 - We have quite a lot of custom powershell scripts for trivial installation tasks. This is because the commerce SIF scripts contain hardcoded values. For example, it is not possible to use hostnames other than localhost. We should be able to remove this custom code when those scripts get fixed.
 - During the installation of the commerce server instances, it tries to set permissions on the log folder. For some reason, this results in an exception saying the access control list is not in canonical form. This can be ignored, because the log folders are mounted on the host. However, it does cause an annoying delay in the installation. 
-- Docker for Windows can be unstable at times, some troubleshooting tips are listed below.
 
 ## Containers not reachable by domain name
 Sometimes the internal Docker DNS is malfunctioning and containers (e.g. mssql) cannot be reached by domain name. To solve this restart the Docker daemon.
 
-### Clean up network hosting
+## Clean up network hosting
 In case it's no longer possible to create networks and docker network commands don't work give this a try: https://github.com/MicrosoftDocs/Virtualization-Documentation/tree/live/windows-server-container-tools/CleanupContainerHostNetworking
 
 ## Clean Docker install
@@ -125,3 +127,9 @@ PS> docker-ci-zap.exe -folder "c:\ProgramData\Docker"
 ```
 
 - Install Docker
+
+## Docker build fails
+Docker for Windows build can be flaky from time to time. Error messages like below can be solved by trying harder (i.e. more often) and making sure no other programs (e.g. file explorer) have the applicable directory open. 
+```
+ERROR: Service 'solr' failed to build: failed to register layer: re-exec error: exit status 1: output: remove \\?\C:\ProgramData\Docker\windowsfilter\6d12d77235757f9e1cdd58216d104f0e51bc56e6021cf206a2dd6d97b0d3520f\UtilityVM\Files\Windows\WinSxS\amd64_microsoft-windows-a..ence-inventory-core_31bf3856ad364e35_10.0.16299.15_none_81bfff856a844456\aepic.dll: Access is denied.
+```
