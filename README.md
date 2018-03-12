@@ -73,11 +73,13 @@ The script takes the following parameters, which have default values:
 | sitecoreUserName          | Sitecore user name                               |
 | sitecorePassword          | Sitecore password                                |
 
+NB. the `InstallCommercePackages.ps1` script requires (by default) the Commerce container to be reachable by DNS at e.g. https://commerce:5000.
+
 ```
-PS> docker exec sitecore powershell -Command "C:\Scripts\InstallCommercePackages.ps1"
+PS> docker exec sitecorecommercedocker_sitecore_1 powershell -Command "C:\Scripts\InstallCommercePackages.ps1"
 ```
 
-The business roles are not created well, so in Sitecore create a role named Commerce Business Users make it a member of the admin group.
+The business roles are not created well, so in Sitecore create a role named Commerce Business Users and make it a member of the admin group.
 
 After this final installation step commit all changes to the Docker images:
 ```
