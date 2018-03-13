@@ -100,10 +100,9 @@ services:
   depends_on:
     - mssql
     - solr
-    - sitecore
   networks:
-  app_net:
-    ipv4_address: 172.16.2.6
+    app_net:
+      ipv4_address: 172.16.2.6
   cpu_count: 4
 
 networks:
