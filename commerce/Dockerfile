@@ -28,6 +28,7 @@ ARG SHOP_NAME="CommerceEngineDefaultStorefront"
 ARG ENVIRONMENT_NAME="HabitatAuthoring"
 ARG COMMERCE_ENGINE_PACKAGE
 ARG SITECORE_IDENTITY_PACKAGE
+ARG PLUMBER_FILE_NAME="plumber.zip"
 
 ARG SQL_USER="sa"
 ARG SQL_SA_PASSWORD
@@ -55,6 +56,7 @@ COPY --from=prepare /Files/SIF.Sitecore.Commerce /Files/SIF.Sitecore.Commerce/
 COPY --from=prepare /Files/Sitecore.BizFX /Files/Sitecore.BizFX/
 COPY --from=prepare /Files/${COMMERCE_ENGINE_PACKAGE} /Files/
 COPY --from=prepare /Files/${SITECORE_IDENTITY_PACKAGE} /Files/
+COPY --from=prepare /Files/${PLUMBER_FILE_NAME} /Files/
 
 # Trust Self signed certificates
 RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:SOLR_CERT_PATH -secret 'secret' -storeName 'Root' -storeLocation 'LocalMachine'
@@ -240,3 +242,42 @@ RUN $pathToAppSettings  = $(Join-Path -Path c:\inetpub\wwwroot\SitecoreIdentityS
     $json.AppSettings.Clients[0].AllowedCorsOrigins[1] = ('https://{0}:4200' -f $Env:HOST_NAME); `         
     $json = ConvertTo-Json $json -Depth 100; `
     Set-Content $pathToAppSettings -Value $json -Encoding UTF8;
+
+# Install plumber
+RUN Expand-Archive -Path "/Files/$Env:PLUMBER_FILE_NAME" -DestinationPath 'c:\\inetpub\\plumber'; `
+    Import-Module -Name WebAdministration; `
+    $iisApp = New-Item IIS:\Sites\Plumber -bindings @{protocol='http';bindingInformation='*:4000:' + $Env:HOST_NAME} -physicalPath 'c:\inetpub\plumber'; `
+    $pathToJson = $(Join-Path -Path 'C:\\inetpub\\plumber' -ChildPath "static\\config.json"); `
+    $originalJson = Get-Content $pathToJson -Raw | ConvertFrom-Json; `
+    $originalJson.EngineUri = ('https://{0}:5000' -f $Env:HOST_NAME); `
+    $originalJson.IdentityServerUri = ('https://{0}:5050' -f $Env:HOST_NAME); `
+    $originalJson.PlumberUri = ('http://{0}:4000' -f $Env:HOST_NAME); `
+    $originalJson | ConvertTo-Json -Depth 100 -Compress | set-content $pathToJson; `
+    $pathToAppSettings  = $(Join-Path -Path c:\inetpub\wwwroot\SitecoreIdentityServer\wwwroot -ChildPath "appsettings.json"); `
+    $json = Get-Content $pathToAppSettings -raw | ConvertFrom-Json; `
+    $client = @{}; `
+    $client.ClientId = 'Plumber'; `
+    $client.ClientName = 'Plumber'; `
+    $client.AccessTokenType = 0; `
+    $client.AccessTokenLifetimeInSeconds = 3600; `
+    $client.IdentityTokenLifetimeInSeconds = 3600; `
+    $client.AllowAccessTokensViaBrowser = $true; `
+    $client.RequireConsent = $false; `
+    $client.RequireClientSecret = $false; `
+    $client.AllowedGrantTypes = @('implicit'); `
+    $client.AllowedScopes = @('openid', 'dataEventRecords', 'dataeventrecordsscope', 'securedFiles', 'securedfilesscope', 'role', 'EngineAPI'); `
+    $client.RedirectUris = @(('http://{0}:4000' -f $Env:HOST_NAME), ('http://{0}:4000/?' -f $Env:HOST_NAME)); `
+    $client.PostLogoutRedirectUris = @(('http://{0}:4000' -f $Env:HOST_NAME), ('http://{0}:4000/?' -f $Env:HOST_NAME)); `
+    $client.AllowedCorsOrigins = @(('http://{0}:4000' -f $Env:HOST_NAME), ('http://{0}:4000' -f $Env:HOST_NAME)); `
+    $json.AppSettings.Clients += $client; `
+    $json = ConvertTo-Json $json -Depth 100; `
+    Set-Content $pathToAppSettings -Value $json -Encoding UTF8; `
+    $CommerceServicesPathCollection = @('C:\\inetpub\\wwwroot\\CommerceAuthoring_Sc9', 'C:\\inetpub\\wwwroot\\CommerceMinions_Sc9', `
+                                       'C:\\inetpub\\wwwroot\\CommerceOps_Sc9', 'C:\\inetpub\\wwwroot\\CommerceShops_Sc9'); `
+    foreach($path in $CommerceServicesPathCollection) { `
+        $pathToJson = $(Join-Path -Path $path -ChildPath "wwwroot\config.json"); `
+        $originalJson = Get-Content $pathToJson -Raw | ConvertFrom-Json; `
+        $appSettingsNode = $originalJson.AppSettings; `
+        $appSettingsNode.AllowedOrigins += ('http://{0}:4000' -f $Env:HOST_NAME); `
+		$originalJson | ConvertTo-Json -Depth 100 -Compress | set-content $pathToJson; `    
+    }
