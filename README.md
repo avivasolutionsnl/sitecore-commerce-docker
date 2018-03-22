@@ -12,7 +12,7 @@ Hopefully this will help you to get up and running with Sitecore and Docker. By 
 
 # Build
 As Sitecore does not distribute Docker images, the first step is to build the required Docker images.
-For this you need the Sitecore installation files and a Sitecore license file. What files to use are set by environment variables (interpreted by docker-compose); download all the packages that are defined by variables in the `.env.` file.
+For this you need the Sitecore installation files and a Sitecore license file. Plumber is installed to inspect Commerce pipelines, download it [here](https://github.com/ewerkman/plumber-sc/releases) and save it as `files/plumber.zip`. What files to use are set by environment variables (interpreted by docker-compose); download all the packages that are defined by variables in the `.env.` file.
 
 As this Sitecore Commerce Docker build relies on Sitecore Docker, first build the Sitecore Docker images: https://github.com/avivasolutionsnl/sitecore-docker
 From the Sitecore Docker `files` directory copy all `.pfx` certificate files to the `files/` directory.
@@ -79,11 +79,9 @@ NB. the `InstallCommercePackages.ps1` script requires (by default) the Commerce 
 PS> docker exec sitecorecommercedocker_sitecore_1 powershell -Command "C:\Scripts\InstallCommercePackages.ps1"
 ```
 
-The business roles are not created well, so in Sitecore create a role named Commerce Business Users and make it a member of the admin group.
-
-After this final installation step commit all changes to the Docker images:
+After this final installation step commit all changes to the Sitecore Docker image:
 ```
-PS> docker commit
+PS> docker commit sitecorecommercedocker_sitecore_1 sitecorecommercedocker_sitecore:latest
 ```
 
 ## DNS
