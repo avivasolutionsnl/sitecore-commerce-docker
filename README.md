@@ -84,6 +84,9 @@ After this final installation step commit all changes to the Sitecore Docker ima
 PS> docker commit sitecorecommercedocker_sitecore_1 sitecorecommercedocker_sitecore:latest
 ```
 
+## Plumber
+Plumber is available at: http://commerce:4000
+
 ## DNS
 The containers have fixed IP addresses in the docker compose file. The easiest way to access the containers from the host is by adding the following to your hosts file:
 
