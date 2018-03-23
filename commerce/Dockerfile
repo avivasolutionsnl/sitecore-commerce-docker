@@ -281,3 +281,6 @@ RUN Expand-Archive -Path "/Files/$Env:PLUMBER_FILE_NAME" -DestinationPath 'c:\\i
         $appSettingsNode.AllowedOrigins += ('http://{0}:4000' -f $Env:HOST_NAME); `
 		$originalJson | ConvertTo-Json -Depth 100 -Compress | set-content $pathToJson; `    
     }
+
+# Expose Plumber port
+EXPOSE 4000
