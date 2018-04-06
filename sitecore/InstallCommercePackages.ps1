@@ -79,7 +79,7 @@ Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/C
     -BaseUrl 'http://sitecore/SiteUtilityPages'
    
 Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/CEConnect/CEConnect.json' `
-    -PackageFullPath /Files/Sitecore.Commerce.Engine.Connect.2.0.835.update `
+    -PackageFullPath /Files/Sitecore.Commerce.Engine.Connect.update `
     -PackagesDirDst c:\\inetpub\wwwroot\\sitecore\\sitecore\\admin\\Packages `
     -BaseUrl 'http://sitecore/SiteUtilityPages' `
     -MergeTool '/Files/Microsoft.Web.XmlTransform.dll' `
