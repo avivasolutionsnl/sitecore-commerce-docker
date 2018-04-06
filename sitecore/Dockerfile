@@ -27,7 +27,7 @@ ARG COMMERCE_CONNECT_ENGINE_PACKAGE
 COPY --from=prepare /Files/CommerceSIF /Files/CommerceSIF/
 COPY --from=prepare /Files/SitecoreCommerceConnectCore /Files/SitecoreCommerceConnectCore
 COPY --from=prepare /Files/${WEB_TRANSFORM_TOOL} /Files/Microsoft.Web.XmlTransform.dll
-COPY --from=prepare /Files/${COMMERCE_CONNECT_ENGINE_PACKAGE} /Files/${COMMERCE_CONNECT_ENGINE_PACKAGE}
+COPY --from=prepare /Files/${COMMERCE_CONNECT_ENGINE_PACKAGE} /Files/Sitecore.Commerce.Engine.Connect.update
 COPY --from=prepare /Files/${ROOT_CERT_PATH} /Files/${ROOT_CERT_PATH}
 
 ADD sitecore/InstallCommercePackages.ps1 /Scripts/
