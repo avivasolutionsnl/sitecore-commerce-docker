@@ -72,7 +72,8 @@ RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:ROOT_CERT_PATH 
 # Import XConnect certificate
 RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:XCONNECT_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
 
-RUN net user /add commerceuser 'Pa$$w0rd'
+RUN net user /add commerceuser 'Pa$$w0rd'; `
+    Set-LocalUser -Name 'commerceuser' -PasswordNeverExpires:$true
 
 # Install SIF
 RUN /Scripts/Install-SIF.ps1
