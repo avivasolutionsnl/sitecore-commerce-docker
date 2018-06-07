@@ -1,6 +1,6 @@
 Param(
     $certificateFile = 'c:\\Files\\commerce.pfx',
-    $shopsServiceUrl = 'https://commerce:5000/api/',
+    $shopsServiceUrl = 'https://commerce:5005/api/',
     $commerceOpsServiceUrl = 'https://commerce:5000/commerceops/',
     $identityServerUrl = 'https://commerce:5050/',
     $defaultEnvironment = 'HabitatShops',
