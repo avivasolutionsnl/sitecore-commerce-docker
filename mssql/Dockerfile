@@ -15,7 +15,7 @@ RUN Expand-Archive -Path /Files/$Env:COMMERCE_SIF_PACKAGE -DestinationPath /File
 
 
 # Stage 1: create actual image
-FROM sitecoredocker_mssql
+FROM sitecore-docker_mssql
 
 SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop';"]
 
