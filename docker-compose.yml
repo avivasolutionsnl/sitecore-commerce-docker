@@ -95,7 +95,9 @@ services:
       ipv4_address: 172.16.2.5
 
  xconnect:
-  image: sitecoredocker_xconnect
+  build:
+    context: ./
+    dockerfile: ./xconnect/Dockerfile
   volumes:
     - .\logs\xconnect:C:\inetpub\wwwroot\xconnect\App_data\Logs
   depends_on:
@@ -114,3 +116,4 @@ networks:
         -
           subnet: 172.16.2.0/24
           gateway: 172.16.2.1
+          
