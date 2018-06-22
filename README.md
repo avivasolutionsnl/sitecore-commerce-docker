@@ -84,6 +84,12 @@ After this final installation step commit all changes to the Sitecore Docker ima
 PS> docker commit sitecore-commerce-docker_sitecore_1 sitecore-commerce-docker_sitecore:latest
 ```
 
+As the installation step installs data in the MSSQL database, either commit the MSSQL container;
+```
+PS> docker commit sitecore-commerce-docker_mssql_1 sitecore-commerce-docker_mssql:latest
+```
+or keep a copy of the database files and mount these in your setup.
+
 ## Plumber
 Plumber is available at: http://commerce:4000
 
