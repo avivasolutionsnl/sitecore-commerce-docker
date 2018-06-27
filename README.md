@@ -58,7 +58,7 @@ To start Sitecore:
 PS> docker-compose up
 ```
 
-For the first run an initialization step is required in the `sitecore` container (retry when it fails). This is needed because not all installation steps can be run isolated. For example, to install sitecore packages, sitecore and its dependencies need to be running. The script will install the commerce connect packages, initialize a default environment and enable the Sitecore commerce data provider. 
+For the first run an initialization step is required in the `sitecore` container (retry when it fails). This is needed because not all installation steps can be run isolated. For example, to install sitecore packages, sitecore and its dependencies need to be running. The script will install the Commerce Connect packages, initialize a default environment and enable the Sitecore commerce data provider. 
 
 The script takes the following parameters, which have default values:
 
@@ -72,6 +72,9 @@ The script takes the following parameters, which have default values:
 | defaultShopName           | Name of the default shop                         |
 | sitecoreUserName          | Sitecore user name                               |
 | sitecorePassword          | Sitecore password                                |
+
+#26
+It is currently necessary to manually install the Commerce Connect package, and after that perform the `InstallCommercePackages.ps1` script.
 
 NB. the `InstallCommercePackages.ps1` script requires (by default) the Commerce container to be reachable by DNS at e.g. https://commerce:5000.
 
