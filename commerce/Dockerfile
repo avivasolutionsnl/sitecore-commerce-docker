@@ -285,3 +285,8 @@ RUN Expand-Archive -Path "/Files/$Env:PLUMBER_FILE_NAME" -DestinationPath 'c:\\i
 
 # Expose Plumber port
 EXPOSE 4000
+
+ADD commerce/WatchDirectoryMultiple.ps1 /Scripts
+ADD commerce/WatchDefaultDirectories.ps1 /Scripts
+
+ENTRYPOINT /Scripts/WatchDefaultDirectories.ps1
