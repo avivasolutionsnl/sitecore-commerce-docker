@@ -41,3 +41,5 @@ RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:ROOT_CERT_PATH 
 # Import XConnect certificate
 RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:COMMERCE_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
 RUN /Scripts/Import-Certificate.ps1 -certificateFile /Files/$Env:ROOT_CERT_PATH -secret 'secret' -storeName 'My' -storeLocation 'LocalMachine'
+
+ENTRYPOINT /Scripts/Watch-Directory.ps1 -Path C:\Workspace -Destination c:\inetpub\wwwroot\sitecore
