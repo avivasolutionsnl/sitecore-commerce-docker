@@ -58,7 +58,7 @@ To start Sitecore:
 PS> docker-compose up
 ```
 
-For the first run an initialization step is required in the `sitecore` container (retry when it fails). This is needed because not all installation steps can be run isolated. For example, to install sitecore packages, sitecore and its dependencies need to be running. The script will install the commerce connect packages, initialize a default environment and enable the Sitecore commerce data provider. 
+For the first run an initialization step is required in the `sitecore` container (retry when it fails). This is needed because not all installation steps can be run isolated. For example, to install sitecore packages, sitecore and its dependencies need to be running. The script will install the Commerce Connect packages, initialize a default environment and enable the Sitecore commerce data provider. 
 
 The script takes the following parameters, which have default values:
 
@@ -73,6 +73,9 @@ The script takes the following parameters, which have default values:
 | sitecoreUserName          | Sitecore user name                               |
 | sitecorePassword          | Sitecore password                                |
 
+#26
+It is currently necessary to manually install the Commerce Connect package, and after that perform the `InstallCommercePackages.ps1` script.
+
 NB. the `InstallCommercePackages.ps1` script requires (by default) the Commerce container to be reachable by DNS at e.g. https://commerce:5000.
 
 ```
@@ -83,6 +86,12 @@ After this final installation step commit all changes to the Sitecore Docker ima
 ```
 PS> docker commit sitecore-commerce-docker_sitecore_1 sitecore-commerce-docker_sitecore:latest
 ```
+
+As the installation step installs data in the MSSQL database, either commit the MSSQL container;
+```
+PS> docker commit sitecore-commerce-docker_mssql_1 sitecore-commerce-docker_mssql:latest
+```
+or keep a copy of the database files and mount these in your setup.
 
 ## Plumber
 Plumber is available at: http://commerce:4000
