@@ -28,7 +28,7 @@ services:
     - .\logs\commerce\CommerceOps_Sc9:C:\inetpub\wwwroot\CommerceOps_Sc9\wwwroot\logs
     - .\logs\commerce\CommerceShops_Sc9:C:\inetpub\wwwroot\CommerceShops_Sc9\wwwroot\logs
     - .\logs\commerce\SitecoreIdentityServer:C:\inetpub\wwwroot\SitecoreIdentityServer\wwwroot\logs
-    - .\build\commerce:C:\Workspace
+    - .\wwwroot\commerce:C:\Workspace
   depends_on:
     - xconnect
     - mssql
@@ -68,7 +68,7 @@ services:
       ROOT_CERT_PATH: ${ROOT_CERT_PATH}
   volumes:
     - .\logs\sitecore:c:\inetpub\wwwroot\${SITECORE_SITE_NAME}\App_Data\logs
-    - .\build\website:C:\Workspace
+    - .\wwwroot\sitecore:C:\Workspace
   depends_on:
     - xconnect
     - mssql
