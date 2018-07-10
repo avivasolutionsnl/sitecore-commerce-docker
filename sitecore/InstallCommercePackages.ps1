@@ -87,7 +87,7 @@ Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/C
     -BaseUrl 'http://sitecore/SiteUtilityPages' `
     -MergeTool '/Files/Microsoft.Web.XmlTransform.dll' `
     -InputFile c:\\inetpub\\wwwroot\\sitecore\\MergeFiles\\Sitecore.Commerce.Engine.Connectors.Merge.Config `
-    -WebConfig c:\\inetpub\\wwwroot\\sitecore\\web.config
+    -WebConfig c:\\inetpub\\wwwroot\\sitecore\\web.config `
     -Skip "InstallPackage"
 
 # Modify the commerce engine connection
