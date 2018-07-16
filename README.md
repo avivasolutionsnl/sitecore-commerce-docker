@@ -51,6 +51,7 @@ PS> ./CreateLogDirs.ps1
 Create a webroot directory:
 ```
 PS> mkdir -p wwwroot/sitecore
+PS> mkdir -p wwwroot/commerce
 ```
 
 To start Sitecore:
@@ -74,7 +75,7 @@ The script takes the following parameters, which have default values:
 | sitecorePassword          | Sitecore password                                |
 
 #26
-It is currently necessary to manually install the Commerce Connect package, and after that perform the `InstallCommercePackages.ps1` script.
+It is currently necessary to manually install the Commerce Connect Core package, and after that perform the `InstallCommercePackages.ps1` script.
 
 NB. the `InstallCommercePackages.ps1` script requires (by default) the Commerce container to be reachable by DNS at e.g. https://commerce:5000.
 
@@ -97,15 +98,8 @@ or keep a copy of the database files and mount these in your setup.
 Plumber is available at: http://commerce:4000
 
 ## DNS
-The containers have fixed IP addresses in the docker compose file. The easiest way to access the containers from the host is by adding the following to your hosts file:
-
-``` Hosts
-172.16.2.2	commerce
-172.16.2.3	mssql
-172.16.2.4	sitecore
-172.16.2.5	solr
-172.16.2.6	xconnect
-```
+To set the Docker container service names as DNS names on your host edit your `hosts` file. 
+A convenient tool to automatically do this is [whales-names](https://github.com/gregolsky/whales-names).
 
 ## Log files
 Logging is set up to log on the host under the logs folder of this repository. 

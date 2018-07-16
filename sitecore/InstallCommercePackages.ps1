@@ -16,7 +16,7 @@ Function GetIdServerToken {
         [Parameter(Mandatory = $true)]
         [string]$password,
         [Parameter(Mandatory = $true)]
-        [string]$urlIdentityServerGetToken        
+        [string]$urlIdentityServerGetToken
     )
 
     $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
@@ -42,9 +42,9 @@ Function BootStrapCommerceServices {
         [Parameter(Mandatory = $true)]
         [string]$urlCommerceShopsServicesBootstrap,
         [Parameter(Mandatory = $true)]
-        [string]$bearerToken            
+        [string]$bearerToken
     )
-	
+
     Write-Host "BootStrapping Commerce Services: $($urlCommerceShopsServicesBootstrap)" -ForegroundColor Yellow
     $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
     $headers.Add("Authorization", $bearerToken)
@@ -53,11 +53,11 @@ Function BootStrapCommerceServices {
 }
 
 Function InitializeCommerceServices {
-    param(        
+    param(
         [Parameter(Mandatory = $true)]
         [string]$urlCommerceShopsServicesInitializeEnvironment,
         [Parameter(Mandatory = $true)]
-        [string]$bearerToken  
+        [string]$bearerToken
     )
 
     $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
@@ -73,22 +73,37 @@ Function InitializeCommerceServices {
 
 Copy-Item -Path /Files/CommerceSIF/SiteUtilityPages -Destination c:\\inetpub\\wwwroot\\sitecore\\SiteUtilityPages -Force -Recurse
 
-# Gives a timeout: install manually
+# Install manually (in order to prevent timeouts)
 # Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/Connect/Connect.json' `
-#     -ModuleFullPath '/Files/SitecoreCommerceConnectCore/package.zip' `
-#     -ModulesDirDst c:\\inetpub\wwwroot\\sitecore\\App_Data\\packages `
-#     -BaseUrl 'http://sitecore/SiteUtilityPages'
-   
-# Install (also) manually using /sitecore/admin update package installer
-# Only perform web.config patching here
+#      -ModuleFullPath '/Files/SitecoreCommerceConnectCore/package.zip' `
+#      -ModulesDirDst c:\\inetpub\wwwroot\\sitecore\\App_Data\\packages `
+#      -BaseUrl 'http://sitecore/SiteUtilityPages'
+
+Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/Connect/Connect_xProfiles.json' `
+     -ModuleFullPath '/Files/CommerceXProfiles/package.zip' `
+     -ModulesDirDst c:\\inetpub\wwwroot\\sitecore\\App_Data\\packages `
+     -BaseUrl 'http://sitecore/SiteUtilityPages'
+
+Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/Connect/Connect_xAnalytics.json' `
+    -ModuleFullPath '/Files/CommerceXAnalytics/package.zip' `
+    -ModulesDirDst c:\\inetpub\wwwroot\\sitecore\\App_Data\\packages `
+    -BaseUrl 'http://sitecore/SiteUtilityPages'
+
+Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/Connect/Connect_MarketingAutomation.json' `
+    -ModuleFullPath '/Files/CommerceMACore/package.zip' `
+    -ModulesDirDst c:\\inetpub\wwwroot\\sitecore\\App_Data\\packages `
+    -BaseUrl 'http://sitecore/SiteUtilityPages' `
+    -AutomationEngineModule 'none' `
+    -XConnectSitePath 'none' `
+    -Skip 'InstallAutomationEngineModule' # Automation Engine is installed in XConnect
+
 Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/CEConnect/CEConnect.json' `
     -PackageFullPath /Files/Sitecore.Commerce.Engine.Connect.update `
     -PackagesDirDst c:\\inetpub\wwwroot\\sitecore\\sitecore\\admin\\Packages `
     -BaseUrl 'http://sitecore/SiteUtilityPages' `
     -MergeTool '/Files/Microsoft.Web.XmlTransform.dll' `
     -InputFile c:\\inetpub\\wwwroot\\sitecore\\MergeFiles\\Sitecore.Commerce.Engine.Connectors.Merge.Config `
-    -WebConfig c:\\inetpub\\wwwroot\\sitecore\\web.config `
-    -Skip "InstallPackage"
+    -WebConfig c:\\inetpub\\wwwroot\\sitecore\\web.config
 
 # Modify the commerce engine connection
 $engineConnectIncludeDir = 'c:\\inetpub\\wwwroot\\sitecore\\App_Config\\Include\\Y.Commerce.Engine'; `
