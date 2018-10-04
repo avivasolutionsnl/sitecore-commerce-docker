@@ -1,4 +1,4 @@
-version: '2.2'
+version: '2.4'
 
 services:
  commerce:
@@ -34,6 +34,8 @@ services:
     - mssql
     - solr
     - sitecore
+  mem_limit: 4096m
+  cpu_count: 6
 
  mssql:
   build:
@@ -46,7 +48,7 @@ services:
   environment:
     ACCEPT_EULA: "Y"
     sa_password: ${SQL_SA_PASSWORD}
-  mem_limit: 2048m
+  mem_limit: 4096m
   cpu_count: 4
   
  sitecore:
@@ -71,6 +73,7 @@ services:
     - xconnect
     - mssql
     - solr
+  mem_limit: 8192m
   cpu_count: 6
   
  solr:
@@ -86,6 +89,7 @@ services:
   ports:
     - ${SOLR_PORT}
   mem_limit: 4096m
+  cpu_count: 4
   
  xconnect:
   build:
@@ -99,4 +103,5 @@ services:
   depends_on:
     - mssql
     - solr
+  mem_limit: 2048m
   cpu_count: 4
