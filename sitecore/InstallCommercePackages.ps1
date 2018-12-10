@@ -73,11 +73,10 @@ Function InitializeCommerceServices {
 
 Copy-Item -Path /Files/CommerceSIF/SiteUtilityPages -Destination c:\\inetpub\\wwwroot\\sitecore\\SiteUtilityPages -Force -Recurse
 
-# Install manually (in order to prevent timeouts)
-# Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/Connect/Connect.json' `
-#      -ModuleFullPath '/Files/SitecoreCommerceConnectCore/package.zip' `
-#      -ModulesDirDst c:\\inetpub\wwwroot\\sitecore\\App_Data\\packages `
-#      -BaseUrl 'http://sitecore/SiteUtilityPages'
+Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/Connect/Connect.json' `
+     -ModuleFullPath '/Files/SitecoreCommerceConnectCore/package.zip' `
+     -ModulesDirDst c:\\inetpub\wwwroot\\sitecore\\App_Data\\packages `
+     -BaseUrl 'http://sitecore/SiteUtilityPages'
 
 Install-SitecoreConfiguration -Path '/Files/CommerceSIF/Configuration/Commerce/Connect/Connect_xProfiles.json' `
      -ModuleFullPath '/Files/CommerceXProfiles/package.zip' `

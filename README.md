@@ -74,9 +74,6 @@ The script takes the following parameters, which have default values:
 | sitecoreUserName          | Sitecore user name                               |
 | sitecorePassword          | Sitecore password                                |
 
-#26
-It is currently necessary to manually install the Commerce Connect Core package, and after that perform the `InstallCommercePackages.ps1` script.
-
 NB. the `InstallCommercePackages.ps1` script requires (by default) the Commerce container to be reachable by DNS at e.g. https://commerce:5000.
 
 ```
