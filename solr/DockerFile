@@ -1,5 +1,5 @@
 # escape=`
-FROM sitecore-docker_solr
+FROM sitecore-docker_solr:9.0.2
 
 SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop';"]
 

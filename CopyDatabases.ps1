@@ -8,6 +8,8 @@ param(
     [string]$ToDatabaseFilePath = 'databases/'
 )
 
+mkdir -Force -Path ${ToDatabaseFilePath}
+
 docker cp ${Container}:${FromDatabaseFilePath}\SitecoreCommerce9_Global_Primary.mdf ${ToDatabaseFilePath}
 docker cp ${Container}:${FromDatabaseFilePath}\SitecoreCommerce9_Global_Primary.ldf ${ToDatabaseFilePath}
 

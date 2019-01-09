@@ -22,6 +22,7 @@ services:
       SOLR_CERT_PATH: ${SOLR_CERT_PATH}
       XCONNECT_CERT_PATH: ${XCONNECT_CERT_PATH}
       PLUMBER_FILE_NAME: ${PLUMBER_FILE_NAME}
+  image: "sxc-commerce:${TAG}"
   volumes:
     - .\logs\commerce\CommerceAuthoring_Sc9:C:\inetpub\wwwroot\CommerceAuthoring_Sc9\wwwroot\logs
     - .\logs\commerce\CommerceMinions_Sc9:C:\inetpub\wwwroot\CommerceMinions_Sc9\wwwroot\logs
@@ -45,6 +46,7 @@ services:
       DB_PREFIX: ${SQL_DB_PREFIX}
       COMMERCE_SDK_PACKAGE: ${COMMERCE_SDK_PACKAGE}
       COMMERCE_SIF_PACKAGE: ${COMMERCE_SIF_PACKAGE}
+  image: "sxc-mssql:${TAG}"
   environment:
     ACCEPT_EULA: "Y"
     sa_password: ${SQL_SA_PASSWORD}
@@ -66,6 +68,7 @@ services:
       COMMERCE_XPROFILES_PACKAGE: ${COMMERCE_XPROFILES_PACKAGE}
       COMMERCE_XANALYTICS_PACKAGE: ${COMMERCE_XANALYTICS_PACKAGE}
       ROOT_CERT_PATH: ${ROOT_CERT_PATH}
+  image: "sxc-sitecore:${TAG}"
   volumes:
     - .\logs\sitecore:c:\inetpub\wwwroot\${SITECORE_SITE_NAME}\App_Data\logs
     - .\wwwroot\sitecore:C:\Workspace
@@ -86,6 +89,7 @@ services:
       SERVICE_NAME: ${SOLR_SERVICE_NAME}
       SITECORE_CORE_PREFIX: ${SITECORE_SOLR_CORE_PREFIX}
       COMMERCE_SIF_PACKAGE: ${COMMERCE_SIF_PACKAGE}
+  image: "sxc-solr:${TAG}"
   ports:
     - ${SOLR_PORT}
   mem_limit: 4096m
@@ -96,8 +100,8 @@ services:
     context: ./
     dockerfile: ./xconnect/Dockerfile
     args:
-      COMMERCE_SIF_PACKAGE: ${COMMERCE_SIF_PACKAGE}
       COMMERCE_MA_FOR_AUTOMATION_ENGINE_PACKAGE: ${COMMERCE_MA_FOR_AUTOMATION_ENGINE_PACKAGE}
+  image: "sxc-xconnect:${TAG}"
   volumes:
     - .\logs\xconnect:C:\inetpub\wwwroot\xconnect\App_data\Logs
   depends_on:

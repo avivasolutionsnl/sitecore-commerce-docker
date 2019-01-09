@@ -22,7 +22,7 @@ RUN Expand-Archive -Path "/Files/$Env:COMMERCE_SIF_PACKAGE" -DestinationPath /Fi
     Expand-Archive -Path "/Files/$Env:COMMERCE_XANALYTICS_PACKAGE" -DestinationPath /Files/CommerceXAnalytics -Force
 
 # Stage 1: perform actual build
-FROM sitecore-docker_sitecore
+FROM sitecore-docker_sitecore:9.0.2
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
