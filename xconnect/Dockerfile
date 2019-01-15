@@ -1,5 +1,6 @@
 # escape=`
-FROM sitecore-docker_xconnect:9.0.2
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 ARG COMMERCE_MA_FOR_AUTOMATION_ENGINE_PACKAGE
 
