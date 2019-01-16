@@ -1,6 +1,7 @@
 # escape=`
 
 # Stage 0: prepare files
+ARG BASE_IMAGE
 FROM microsoft/aspnet:4.7.1-windowsservercore-1709 AS prepare
 
 ARG COMMERCE_SDK_PACKAGE
@@ -15,7 +16,7 @@ RUN Expand-Archive -Path /Files/$Env:COMMERCE_SIF_PACKAGE -DestinationPath /File
 
 
 # Stage 1: create actual image
-FROM sitecore-docker_mssql
+FROM ${BASE_IMAGE}
 
 SHELL ["powershell", "-NoProfile", "-Command", "$ErrorActionPreference = 'Stop';"]
 

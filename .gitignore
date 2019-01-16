@@ -1,2 +1,9 @@
+build/bin
+build/obj
+cores
+databases
 files
 logs
+tmp
+.tmp
+*.log

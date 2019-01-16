@@ -1,6 +1,7 @@
 # escape=`
 
 # Stage 0: prepare files
+ARG BASE_IMAGE
 FROM microsoft/aspnet:4.7.1-windowsservercore-1709 AS prepare
 
 ARG COMMERCE_SIF_PACKAGE
@@ -22,7 +23,7 @@ RUN Expand-Archive -Path "/Files/$Env:COMMERCE_SIF_PACKAGE" -DestinationPath /Fi
     Expand-Archive -Path "/Files/$Env:COMMERCE_XANALYTICS_PACKAGE" -DestinationPath /Files/CommerceXAnalytics -Force
 
 # Stage 1: perform actual build
-FROM sitecore-docker_sitecore
+FROM ${BASE_IMAGE}
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
