@@ -1,3 +1,7 @@
+> THIS REPO IS NO LONGER MAINTAINED.
+>
+> The Sitecore XC Docker configuration is now available in [sitecore-docker](https://github.com/avivasolutionsnl/sitecore-docker).
+
 Run Sitecore Commerce 9 using Docker and Windows containers.
 
 # Disclaimer
